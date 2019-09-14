@@ -1,0 +1,49 @@
+﻿@model InsuranceManager.ViewModels.PolicyFormViewModel
+
+@{
+    ViewBag.Title = "PolicyForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Title</h2>
+
+@using (Html.BeginForm("Save", "Policies"))
+{
+    @Html.ValidationSummary(true, "Please fix the following errors.")
+    <div class="form-group">
+        @Html.LabelFor(p => p.Name)
+        @Html.TextBoxFor(p => p.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(p => p.Name)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(p => p.Description)
+        @Html.TextBoxFor(p => p.Description, new { @class = "form-control" })
+        @Html.ValidationMessageFor(p => p.Description)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(p => p.StartDate)
+        @Html.TextBoxFor(p => p.StartDate, "{0:d MMM yyyy}", new { @class = "form-control" })
+        @Html.ValidationMessageFor(p => p.StartDate)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(p => p.CoveragePeriod)
+        @Html.TextBoxFor(p => p.CoveragePeriod, new { @class = "form-control" })
+        @Html.ValidationMessageFor(p => p.CoveragePeriod)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(p => p.Price)
+        @Html.TextBoxFor(p => p.Price, new { @class = "form-control" })
+        @Html.ValidationMessageFor(p => p.Price)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(p => p.TypeOfRiskId)
+        @Html.DropDownListFor(p => p.TypeOfRiskId, new SelectList(Model.TypeOfRisk, "Id", "Name"), "Select Type Of Risk", new { @class = "form-control" })
+        @Html.ValidationMessageFor(p => p.TypeOfRiskId)
+    </div>
+    @Html.HiddenFor(p => p.Id)
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-primary">Save</button>
+}
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+}

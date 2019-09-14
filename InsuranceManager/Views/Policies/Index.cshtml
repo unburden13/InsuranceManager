@@ -1,0 +1,86 @@
+﻿@model IEnumerable<InsuranceManager.Models.Policy>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Current Policies</h2>
+<button class="btn btn-default">@Html.ActionLink("New Policy", "New", "Policies")</button>
+
+<table id="policies" class="table table-striped table-hover ">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Start Date</th>
+            <th>Coverage Period (In Months)</th>
+            <th>Price</th>
+            <th>Type Of Risk</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+@section scripts{
+    
+    <script>
+
+        var table = $(document).ready(function () {
+            $("#policies").DataTable({
+                ajax: {
+                    url: "api/policies",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "name",
+                        render: function (data, type, policy) {
+                            return "<a href='/policies/edit/" + policy.id + "'>" + policy.name + "</a>";
+                        }
+                    },
+                    {
+                        data: "description"
+                    },
+                    {
+                        data: "startDate"
+                    },
+                    {
+                        data: "coveragePeriod"
+                    },
+                    {
+                        data: "price"
+                    },
+                    {
+                        data: "name"
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn-link js-delete' data-policy-id=" + data + " >Delete</button>";
+                        }
+                    }
+                ]
+            });
+        });
+
+        $("#policies").on("click", ".js-delete", function () {
+            var button = $(this);
+
+            bootbox.confirm("Are you sure you want to delete this policy?", function (confirmed) {
+                if (confirmed == true) {
+                    $.ajax({
+                        url: "api/policies/" + button.attr("data-policy-id"),
+                        method: "DELETE",
+                        success: function () {
+                            table.row(button.parents("tr")).remove().draw();
+                        }
+                    });
+                }
+                
+            });
+        });
+
+    </script>
+    
+    }

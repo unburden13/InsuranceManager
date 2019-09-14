@@ -20,6 +20,19 @@ namespace InsuranceManager.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+
+        public DbSet<Policy> Policies { get; set; }
+
+        public DbSet<TypeOfRisk> TypesOfRisk { get; set; }
+
+        public DbSet<Coverage> Coverages { get; set; }
+
+        public DbSet<CoveragesByPolicy> CoveragesByPolicy { get; set; }
+
+        public DbSet<Customer> Customers { get; set; }
+
+        public DbSet<PoliciesByCustomer> PoliciesByCustomer { get; set; }
+
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
