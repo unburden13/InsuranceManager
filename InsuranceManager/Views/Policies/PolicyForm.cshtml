@@ -1,49 +1,219 @@
-﻿@model InsuranceManager.ViewModels.PolicyFormViewModel
+﻿@model int
 
 @{
     ViewBag.Title = "PolicyForm";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@Model.Title</h2>
+<h2 id="title"></h2>
 
-@using (Html.BeginForm("Save", "Policies"))
-{
-    @Html.ValidationSummary(true, "Please fix the following errors.")
+<form id="policyForm">
     <div class="form-group">
-        @Html.LabelFor(p => p.Name)
-        @Html.TextBoxFor(p => p.Name, new { @class = "form-control" })
-        @Html.ValidationMessageFor(p => p.Name)
+        <label>
+            Name
+        </label>
+        <input id="name" type="text" required value="" class="form-control" />
+
+        <label>
+            Description
+        </label>
+        <input id="description" type="text" required value="" class="form-control" />
+    </div>
+    
+    <div class="form-group">
+        <label>
+            Start Date
+        </label>
+        <input id="startDate" type="text" required value="" class="form-control" />
     </div>
     <div class="form-group">
-        @Html.LabelFor(p => p.Description)
-        @Html.TextBoxFor(p => p.Description, new { @class = "form-control" })
-        @Html.ValidationMessageFor(p => p.Description)
+        <label>
+            Coverage Period
+        </label>
+        <input id="coveragePeriod" type="text" required value="" class="form-control" />
     </div>
     <div class="form-group">
-        @Html.LabelFor(p => p.StartDate)
-        @Html.TextBoxFor(p => p.StartDate, "{0:d MMM yyyy}", new { @class = "form-control" })
-        @Html.ValidationMessageFor(p => p.StartDate)
+        <label>
+            Price
+        </label>
+        <input id="price" type="text" required value="" class="form-control" />
     </div>
     <div class="form-group">
-        @Html.LabelFor(p => p.CoveragePeriod)
-        @Html.TextBoxFor(p => p.CoveragePeriod, new { @class = "form-control" })
-        @Html.ValidationMessageFor(p => p.CoveragePeriod)
+        <label>
+            Type Of Risk
+        </label>
+        <select id="typesOfRisk" required class="form-control">
+        </select>
     </div>
     <div class="form-group">
-        @Html.LabelFor(p => p.Price)
-        @Html.TextBoxFor(p => p.Price, new { @class = "form-control" })
-        @Html.ValidationMessageFor(p => p.Price)
+        <h4>Add Coverages</h4>
     </div>
     <div class="form-group">
-        @Html.LabelFor(p => p.TypeOfRiskId)
-        @Html.DropDownListFor(p => p.TypeOfRiskId, new SelectList(Model.TypeOfRisk, "Id", "Name"), "Select Type Of Risk", new { @class = "form-control" })
-        @Html.ValidationMessageFor(p => p.TypeOfRiskId)
+        <label>Coverage</label>
+        <select id="coverages" class="form-control"></select>
+        <label >Percentage</label>
+        <input id="percentage" type="text" class="form-control"/>
+        <button id="addCoverage" class="btn btn-info">Add</button>
     </div>
-    @Html.HiddenFor(p => p.Id)
-    @Html.AntiForgeryToken()
-    <button type="submit" class="btn btn-primary">Save</button>
-}
+    <div class="form-group">
+        <table id="coveragesByPolicy" class="table table-striped table-hover">
+            <tr>
+                <th>Coverage</th>
+                <th>Percentage</th>
+            </tr>
+        </table>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+</form>
+
 @section scripts{
-    @Scripts.Render("~/bundles/jqueryval")
+    
+    <script>
+
+        $(document).ready(() => {
+            policyForm.configureUI();
+            policyForm.formLogic.getTypesOfRisk();
+            policyForm.formLogic.getCoverages();
+        });
+
+        let policyForm = {
+            global: {
+                policyId: @Model,
+                policy: {},
+                coveragesByPolicy: []
+            },
+            configureUI: () => {
+
+                $("#policyForm").submit((e) => {
+                    e.preventDefault();
+
+                    policyForm.formLogic.loadPolicyObject();
+                    policyForm.services.savePolicy();
+                });
+
+                $("#addCoverage").click((e) => {
+                    e.preventDefault();
+
+                    let policyCoverage = {};
+                    policyCoverage.policyId = policyForm.global.policyId;
+                    policyCoverage.coverageId = $("#coverages").val();
+                    policyCoverage.percentage = $("#percentage").val();
+
+                    policyForm.global.coveragesByPolicy.push(policyCoverage);
+
+                    let coverageName = $("#coverages option:selected").text();
+                    $("#coveragesByPolicy").append($("<tr><td>" + coverageName + "</td><td>" + policyCoverage.percentage + "</td></tr>"));
+
+
+                });
+
+            },
+            formLogic: {
+                loadPolicyObject: () => {
+                    policyForm.global.policy.id = policyForm.global.policyId;
+                    policyForm.global.policy.name = $("#name").val();
+                    policyForm.global.policy.description = $("#description").val();
+                    policyForm.global.policy.startDate = $("#startDate").val();
+                    policyForm.global.policy.coveragePeriod = $("#coveragePeriod").val();
+                    policyForm.global.policy.price = $("#price").val();
+                    policyForm.global.policy.typeOfRiskId = $("#typesOfRisk").val();
+                    policyForm.global.policy.coveragesByPolicy = policyForm.global.coveragesByPolicy;
+                },
+                getTypesOfRisk: () => {
+                    policyForm.services.getTypesOfRisk()
+                        .done((typesOfRisk) => {
+                            $("#typesOfRisk").append($("<option value=''>Select a type of risk</option>"));
+                            $.each(typesOfRisk, function (key, typeOfRisk) {
+                                $("#typesOfRisk")
+                                    .append($("<option></option>")
+                                    .val(typeOfRisk.id)
+                                    .html(typeOfRisk.name));
+                            });
+                            policyForm.formLogic.getPolicy();
+                        });
+                },
+                getCoverages: () => {
+                    policyForm.services.getCoverages()
+                        .done((coverages) => {
+                            $("#coverages").append($("<option value=''>Select a coverage</option>"));
+                            $.each(coverages, function (key, coverage) {
+                                $("#coverages")
+                                    .append($("<option></option>")
+                                    .val(coverage.id)
+                                    .html(coverage.name));
+                            });
+                        });
+                },
+                getPolicy: () => {
+                    if (policyForm.global.policyId !== 0) {
+                        policyForm.services.getPolicy();
+                        $("#title").text("Edit Policy");
+                    } else {
+                        $("#title").text("New Policy");
+                    }
+                }
+            },
+            services: {
+                getPolicy: () => {
+                    $.ajax({
+                        url: "/api/policies/" + policyForm.global.policyId,
+                        method: "GET"
+                    }).done((data) => {
+                        policyForm.global.policyId = data.id;
+                        $("#name").val(data.name);
+                        $("#description").val(data.description);
+                        $("#startDate").val(data.startDate);
+                        $("#coveragePeriod").val(data.coveragePeriod);
+                        $("#price").val(data.price);
+                        $("#typesOfRisk").val(data.typeOfRiskId);
+
+
+                        let policyCoverage = {};
+                        $.each(data.coveragesByPolicy, function (key, value) {
+                            policyCoverage.policyId = value.policyId;
+                            policyCoverage.coverageId = value.coverageId;
+                            policyCoverage.percentage = value.percentage;
+
+                            policyForm.global.coveragesByPolicy.push(policyCoverage);
+
+                            $("#coveragesByPolicy").append($("<tr><td>" + value.coverageId + "</td><td>" + policyCoverage.percentage + "</td></tr>"));
+                        });
+
+
+                    });
+                },
+                getTypesOfRisk: () => {
+                    return $.ajax({
+                        url: "/api/typesOfRisk",
+                        method: "GET"
+                    });
+                },
+                getCoverages: () => {
+                    return $.ajax({
+                        url: "/api/coverages",
+                        method: "GET"
+                    });
+                },
+                savePolicy: () => {
+                    $.ajax({
+                        url: policyForm.global.policyId == 0 ? "/api/policies/" : "/api/policies/" + policyForm.global.policyId,
+                        method: policyForm.global.policyId == 0 ? "POST" : "PUT",
+                        data: policyForm.global.policy
+                    }).done((data) => {
+                        policyForm.global.policyId = data;
+                        bootbox.alert("Policy saved successfully.");
+                    }).fail((data) => {
+                        console.log(data);
+                        if (error.responseJSON.Message)
+                            bootbox.alert(error.responseJSON.Message);
+                        else
+                            bootbox.alert("An error has ocurred. Please contact our support team.");
+                    });
+                }
+            }
+        }
+
+    </script>
 }

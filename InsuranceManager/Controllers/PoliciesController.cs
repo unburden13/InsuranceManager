@@ -27,18 +27,18 @@ namespace InsuranceManager.Controllers
         // GET: Policies
         public ActionResult Index()
         {
-            var policies = _context.Policies.Include(p => p.TypeOfRisk).ToList();
-            return View(policies);
+            //var policies = _context.Policies.Include(p => p.TypeOfRisk).ToList();
+            return View(0);
         }
 
         public ActionResult New()
         {
-            var typesOfRisk = _context.TypesOfRisk.ToList();
-            var viewModel = new PolicyFormViewModel {
-                TypeOfRisk = typesOfRisk
-            };
+            //var typesOfRisk = _context.TypesOfRisk.ToList();
+            //var viewModel = new PolicyFormViewModel {
+            //    TypeOfRisk = typesOfRisk
+            //};
 
-            return View("PolicyForm", viewModel);
+            return View("PolicyForm", 0);
         }
 
         public ActionResult Save(Policy policy)
@@ -76,18 +76,7 @@ namespace InsuranceManager.Controllers
 
         public ActionResult Edit(int id)
         {
-            var policy = _context.Policies.SingleOrDefault(p => p.Id == id);
-
-            if (policy == null)
-                return HttpNotFound();
-
-            var viewModel = new PolicyFormViewModel(policy)
-            {
-                TypeOfRisk = _context.TypesOfRisk.ToList()
-            };
-
-            return View("PolicyForm", viewModel);
-
+            return View("PolicyForm", id);
         }
 
     }

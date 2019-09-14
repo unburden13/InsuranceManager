@@ -33,14 +33,18 @@ namespace InsuranceManager.Controllers.Api
                 .ToList()
                 .Select(Mapper.Map<Policy, PolicyDto>));
         }
-        
+
         // GET api/policies/1
         public IHttpActionResult GetPolicy(int id)
         {
             var policy = _context.Policies.SingleOrDefault(m => m.Id == id);
-
+            
             if (policy == null)
                 return NotFound();
+
+            policy.CoveragesByPolicy = _context.CoveragesByPolicy
+                .Where(c => c.PolicyId.Equals(id))
+                .ToList();
 
             return Ok(Mapper.Map<Policy, PolicyDto>(policy));
         }
@@ -58,6 +62,15 @@ namespace InsuranceManager.Controllers.Api
             _context.SaveChanges();
 
             policyDto.Id = policy.Id;
+
+            foreach(var detailCoverage in policyDto.CoveragesByPolicy)
+            {
+                var coveragesByPolicy = Mapper.Map<CoveragesByPolicyDto, CoveragesByPolicy>(detailCoverage);
+                coveragesByPolicy.PolicyId = policyDto.Id;
+                _context.CoveragesByPolicy.Add(coveragesByPolicy);
+            }
+            _context.SaveChanges();
+
 
             return Created(new Uri(Request.RequestUri + "/" + policy.Id), policyDto);
         }

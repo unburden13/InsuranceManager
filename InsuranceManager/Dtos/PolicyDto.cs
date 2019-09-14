@@ -28,5 +28,7 @@ namespace InsuranceManager.Dtos
         [Required]
         public int TypeOfRiskId { get; set; }
 
+        public List<CoveragesByPolicyDto> CoveragesByPolicy { get; set; }
+
     }
 }

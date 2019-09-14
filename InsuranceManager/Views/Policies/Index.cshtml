@@ -1,4 +1,4 @@
-﻿@model IEnumerable<InsuranceManager.Models.Policy>
+﻿@model int
 
 @{
     ViewBag.Title = "Index";
@@ -73,7 +73,7 @@
                         url: "api/policies/" + button.attr("data-policy-id"),
                         method: "DELETE",
                         success: function () {
-                            table.row(button.parents("tr")).remove().draw();
+                            button.parents("tr").remove();
                         }
                     });
                 }

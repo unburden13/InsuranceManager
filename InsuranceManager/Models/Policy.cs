@@ -30,5 +30,7 @@ namespace InsuranceManager.Models
 
         public TypeOfRisk TypeOfRisk { get; set; }
 
+        public List<CoveragesByPolicy> CoveragesByPolicy { get; set; }
+
     }
 }
