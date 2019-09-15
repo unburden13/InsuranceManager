@@ -15,10 +15,18 @@ namespace InsuranceManager
 
             routes.MapMvcAttributeRoutes();
 
+            
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
+                name: "PoliciesByCustomer",
+                url: "{controller}/{action}/{id}/{customerName}",
+                defaults: new { controller = "PoliciesByCustomer", action = "Index", id = UrlParameter.Optional, customerName = UrlParameter.Optional }
             );
         }
     }

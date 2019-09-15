@@ -30,6 +30,8 @@ namespace InsuranceManager.App_Start
             builder.RegisterType<SqlRepository.Coverage.CoverageRepository>();
             builder.RegisterType<SqlRepository.CoverageByPolicy.CoverageByPolicyRepository>();
             builder.RegisterType<SqlRepository.TypeOfRisk.TypeOfRiskRepository>();
+            builder.RegisterType<SqlRepository.Customer.CustomerRepository>();
+            builder.RegisterType<SqlRepository.PolicyByCustomer.PolicyByCustomerRepository>();
 
             container = builder.Build();
 

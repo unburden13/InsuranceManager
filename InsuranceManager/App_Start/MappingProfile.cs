@@ -18,14 +18,15 @@ namespace InsuranceManager.App_Start
             Mapper.CreateMap<TypeOfRisk, TypeOfRiskDto>();
             Mapper.CreateMap<Coverage, CoverageDto>();
             Mapper.CreateMap<CoverageByPolicy, CoverageByPolicyDto>();
-
-            Mapper.CreateMap<Policy, PolicyDto>();
-
+            Mapper.CreateMap<Customer, CustomerDto>();
+            Mapper.CreateMap<PolicyByCustomer, PolicyByCustomerDto>();
 
             //Dto to Domain
             Mapper.CreateMap<PolicyDto, Policy>()
                 .ForMember(p => p.Id, opt => opt.Ignore());
             Mapper.CreateMap<CoverageByPolicyDto, CoverageByPolicy>()
+                .ForMember(c => c.Id, opt => opt.Ignore());
+            Mapper.CreateMap<PolicyByCustomerDto, PolicyByCustomer>()
                 .ForMember(c => c.Id, opt => opt.Ignore());
 
         }

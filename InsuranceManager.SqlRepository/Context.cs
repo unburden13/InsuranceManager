@@ -23,9 +23,9 @@ namespace InsuranceManager.SqlRepository
 
         public DbSet<Domain.CoverageByPolicy> CoveragesByPolicy { get; set; }
 
-        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Domain.Customer> Customers { get; set; }
 
-        public DbSet<PolicyByCustomer> PoliciesByCustomer { get; set; }
+        public DbSet<Domain.PolicyByCustomer> PoliciesByCustomers { get; set; }
 
     }
 

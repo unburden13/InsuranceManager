@@ -66,6 +66,10 @@
     <Compile Include="Coverage\Coverage.cs" />
     <Compile Include="Coverage\CoverageRepository.cs" />
     <Compile Include="CoverageByPolicy\CoverageByPolicy.cs" />
+    <Compile Include="Customer\Customer.cs" />
+    <Compile Include="Customer\CustomerRepository.cs" />
+    <Compile Include="PolicyByCustomer\PolicyByCustomer.cs" />
+    <Compile Include="PolicyByCustomer\PolicyByCustomerRepository.cs" />
     <Compile Include="Policy\Policy.cs" />
     <Compile Include="Policy\PolicyRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

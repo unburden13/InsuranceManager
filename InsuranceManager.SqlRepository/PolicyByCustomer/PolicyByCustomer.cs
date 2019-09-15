@@ -5,19 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace InsuranceManager.Domain
+namespace InsuranceManager.SqlRepository.PolicyByCustomer
 {
     [Table("PoliciesByCustomers")]
     public class PolicyByCustomer
     {
         public int Id { get; set; }
 
-        public Customer Customer { get; set; }
         public int CustomerId { get; set; }
 
-        public Policy Policy { get; set; }
         public int PolicyId { get; set; }
 
-        public bool Cancelled { get; set; }
+        public bool Canelled { get; set; }
+
     }
 }

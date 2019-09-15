@@ -227,13 +227,18 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Api\CoveragesController.cs" />
+    <Compile Include="Controllers\Api\CustomersController.cs" />
+    <Compile Include="Controllers\Api\PoliciesByCustomerController.cs" />
     <Compile Include="Controllers\Api\PoliciesController.cs" />
     <Compile Include="Controllers\Api\TypesOfRiskController.cs" />
+    <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PoliciesController.cs" />
     <Compile Include="Dtos\CoverageByPolicyDto.cs" />
     <Compile Include="Dtos\CoverageDto.cs" />
+    <Compile Include="Dtos\CustomerDto.cs" />
+    <Compile Include="Dtos\PolicyByCustomerDto.cs" />
     <Compile Include="Dtos\PolicyDto.cs" />
     <Compile Include="Dtos\TypeOfRiskDto.cs" />
     <Compile Include="Global.asax.cs">
@@ -493,6 +498,8 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Policies\Index.cshtml" />
     <Content Include="Views\Policies\PolicyForm.cshtml" />
+    <Content Include="Views\Customers\Index.cshtml" />
+    <Content Include="Views\Customers\PoliciesByCustomerForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
