@@ -4,47 +4,48 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using System.Data.Entity;
-using InsuranceManager.Models;
 using InsuranceManager.Dtos;
 using AutoMapper;
+using InsuranceManager.App_Start;
+using InsuranceManager.Contract;
+using InsuranceManager.SqlRepository.Policy;
+using InsuranceManager.SqlRepository.CoverageByPolicy;
+using Policy = InsuranceManager.Domain.Policy;
+using CoverageByPolicy = InsuranceManager.Domain.CoverageByPolicy;
 
 namespace InsuranceManager.Controllers.Api
 {
+    /// <summary>
+    /// Controller for the policies CRUD
+    /// </summary>
     public class PoliciesController : ApiController
     {
-        public ApplicationDbContext _context;
+        private IPolicyRepository policyRepository;
+        private ICoverageByPolicyRepository coverageByPolicyRepository;
 
         public PoliciesController()
         {
-            _context = new ApplicationDbContext();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            _context.Dispose();
+            policyRepository = IocConfig.GetInstance<PolicyRepository>();
+            coverageByPolicyRepository = IocConfig.GetInstance<CoverageByPolicyRepository>();
         }
 
         // GET api/policies
         public IHttpActionResult GetPolicies()
         {
-            return Ok(_context.Policies
-                .Include(p => p.TypeOfRisk)
-                .ToList()
-                .Select(Mapper.Map<Policy, PolicyDto>));
+            return Ok(policyRepository.GetPolicies().Select(Mapper.Map <Policy, PolicyDto>));
         }
 
         // GET api/policies/1
         public IHttpActionResult GetPolicy(int id)
         {
-            var policy = _context.Policies.SingleOrDefault(m => m.Id == id);
-            
+            var policy = policyRepository.GetPolicy(id);
+
             if (policy == null)
                 return NotFound();
 
-            policy.CoveragesByPolicy = _context.CoveragesByPolicy
-                .Where(c => c.PolicyId.Equals(id))
-                .ToList();
+            var coveragesByPolicy = coverageByPolicyRepository.GetCoveragesByPolicy(id);
+
+            policy.CoveragesByPolicy = coveragesByPolicy.ToList();
 
             return Ok(Mapper.Map<Policy, PolicyDto>(policy));
         }
@@ -58,21 +59,17 @@ namespace InsuranceManager.Controllers.Api
 
             var policy = Mapper.Map<PolicyDto, Policy>(policyDto);
 
-            _context.Policies.Add(policy);
-            _context.SaveChanges();
-
+            policy.Id = policyRepository.CreatePolicy(policy);
             policyDto.Id = policy.Id;
 
-            foreach(var detailCoverage in policyDto.CoveragesByPolicy)
-            {
-                var coveragesByPolicy = Mapper.Map<CoveragesByPolicyDto, CoveragesByPolicy>(detailCoverage);
-                coveragesByPolicy.PolicyId = policyDto.Id;
-                _context.CoveragesByPolicy.Add(coveragesByPolicy);
-            }
-            _context.SaveChanges();
+            //foreach (var detailCoverage in policyDto.CoveragesByPolicy)
+            //{
+            //    var coverageByPolicy = Mapper.Map<CoverageByPolicyDto, CoverageByPolicy>(detailCoverage);
+            //    coverageByPolicy.PolicyId = policyDto.Id;
+            //    coverageByPolicyRepository.CreateCoverageByPolicy(coverageByPolicy);
+            //}
 
-
-            return Created(new Uri(Request.RequestUri + "/" + policy.Id), policyDto);
+            return Ok(policy.Id);
         }
 
         // PUT api/policies/1
@@ -82,26 +79,25 @@ namespace InsuranceManager.Controllers.Api
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var policyInDb = _context.Policies.SingleOrDefault(p => p.Id == id);
+            var policyInDb = policyRepository.GetPolicy(id);
+            if (policyInDb == null)
+                return NotFound();
 
             Mapper.Map(policyDto, policyInDb);
-
-            _context.SaveChanges();
+            policyRepository.UpdatePolicy(policyInDb);
 
             return Ok();
-
         }
 
         //DELETE api/policies/1
         public IHttpActionResult DeletePolicy(int id)
         {
-            var policyInDb = _context.Policies.SingleOrDefault(p => p.Id == id);
+            var policyInDb = policyRepository.GetPolicy(id);
 
             if (policyInDb == null)
                 return NotFound();
 
-            _context.Policies.Remove(policyInDb);
-            _context.SaveChanges();
+            policyRepository.DeletePolicy(id);
 
             return Ok();
         }

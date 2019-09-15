@@ -6,6 +6,7 @@ using System.Data.Entity;
 using System.Web.Mvc;
 using InsuranceManager.Models;
 using InsuranceManager.ViewModels;
+using InsuranceManager.Domain;
 
 namespace InsuranceManager.Controllers
 {
@@ -27,17 +28,11 @@ namespace InsuranceManager.Controllers
         // GET: Policies
         public ActionResult Index()
         {
-            //var policies = _context.Policies.Include(p => p.TypeOfRisk).ToList();
             return View(0);
         }
 
         public ActionResult New()
         {
-            //var typesOfRisk = _context.TypesOfRisk.ToList();
-            //var viewModel = new PolicyFormViewModel {
-            //    TypeOfRisk = typesOfRisk
-            //};
-
             return View("PolicyForm", 0);
         }
 

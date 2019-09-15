@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace InsuranceManager.Models
+namespace InsuranceManager.Domain
 {
-    public class PoliciesByCustomer
+    public class PolicyByCustomer
     {
         public int Id { get; set; }
 
@@ -16,6 +17,5 @@ namespace InsuranceManager.Models
         public int PolicyId { get; set; }
 
         public bool Cancelled { get; set; }
-
     }
 }

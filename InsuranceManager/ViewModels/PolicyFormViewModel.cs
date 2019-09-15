@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using InsuranceManager.Models;
 using System.ComponentModel.DataAnnotations;
+using InsuranceManager.Domain;
 
 namespace InsuranceManager.ViewModels
 {

@@ -4,33 +4,30 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using System.Data.Entity;
-using InsuranceManager.Models;
+using InsuranceManager.Domain;
 using InsuranceManager.Dtos;
 using AutoMapper;
+using InsuranceManager.Contract;
+using InsuranceManager.SqlRepository.Coverage;
+using Coverage = InsuranceManager.Domain.Coverage;
+
 
 namespace InsuranceManager.Controllers.Api
 {
     public class CoveragesController : ApiController
     {
-        public ApplicationDbContext _context;
 
-        public CoveragesController()
-        {
-            _context = new ApplicationDbContext();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            _context.Dispose();
-        }
+        private ICoverageRepository coverageRepository;
 
         // GET api/coverages
         public IHttpActionResult GetCoverages()
         {
-            return Ok(_context.Coverages
-                .ToList()
+            coverageRepository = new CoverageRepository();
+            var coverages = coverageRepository.GetCoverages();
+
+            return Ok(coverageRepository.GetCoverages()
                 .Select(Mapper.Map<Coverage, CoverageDto>));
+            
         }
 
     }

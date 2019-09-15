@@ -8,29 +8,24 @@ using System.Data.Entity;
 using InsuranceManager.Models;
 using InsuranceManager.Dtos;
 using AutoMapper;
+using InsuranceManager.Contract;
+using InsuranceManager.SqlRepository.TypeOfRisk;
+using TypeOfRisk = InsuranceManager.Domain.TypeOfRisk;
 
 namespace InsuranceManager.Controllers.Api
 {
     public class TypesOfRiskController : ApiController
     {
-        public ApplicationDbContext _context;
-
-        public TypesOfRiskController()
-        {
-            _context = new ApplicationDbContext();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            _context.Dispose();
-        }
-
+        private ITypeOfRiskRepository typeOfRiskRepository;
+        
         // GET api/coverages
         public IHttpActionResult GetTypesOfRisk ()
         {
-            return Ok(_context.TypesOfRisk
-                .ToList()
+
+            typeOfRiskRepository = new TypeOfRiskRepository();
+            return Ok(typeOfRiskRepository.GetTypesOfRisk()
                 .Select(Mapper.Map<TypeOfRisk, TypeOfRiskDto>));
+            
         }
 
     }

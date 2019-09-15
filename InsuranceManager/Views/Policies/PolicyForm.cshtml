@@ -1,4 +1,4 @@
-﻿@model int
+﻿@model int?
 
 @{
     ViewBag.Title = "PolicyForm";
@@ -180,7 +180,6 @@
 
                             $("#coveragesByPolicy").append($("<tr><td>" + value.coverageId + "</td><td>" + policyCoverage.percentage + "</td></tr>"));
                         });
-
 
                     });
                 },

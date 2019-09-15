@@ -5,6 +5,16 @@ VisualStudioVersion = 16.0.29215.179
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InsuranceManager", "InsuranceManager.csproj", "{07065CF9-457B-4679-BDEA-A448A0F7A478}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InsuranceManager.BusinessLogic", "..\InsuranceManager.BusinessLogic\InsuranceManager.BusinessLogic.csproj", "{150F757F-041C-4AD6-BA99-95C765EF7EAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InsuranceManager.Domain", "..\InsuranceManager.Domain\InsuranceManager.Domain.csproj", "{A46B0A57-5DC9-41DB-A87E-5DCABE2A8C13}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Repositories", "Repositories", "{835ED28E-A623-4CB5-B497-5DF0A0660D39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InsuranceManager.SqlRepository", "..\InsuranceManager.SqlRepository\InsuranceManager.SqlRepository.csproj", "{75F307F1-6E0C-48AD-B656-A6E87131AA21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InsuranceManager.Contract", "..\InsuranceManager.Contract\InsuranceManager.Contract.csproj", "{73835FC5-8B7A-4EF6-9AD7-5E4752130D38}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,9 +25,29 @@ Global
 		{07065CF9-457B-4679-BDEA-A448A0F7A478}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07065CF9-457B-4679-BDEA-A448A0F7A478}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07065CF9-457B-4679-BDEA-A448A0F7A478}.Release|Any CPU.Build.0 = Release|Any CPU
+		{150F757F-041C-4AD6-BA99-95C765EF7EAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{150F757F-041C-4AD6-BA99-95C765EF7EAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{150F757F-041C-4AD6-BA99-95C765EF7EAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{150F757F-041C-4AD6-BA99-95C765EF7EAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A46B0A57-5DC9-41DB-A87E-5DCABE2A8C13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A46B0A57-5DC9-41DB-A87E-5DCABE2A8C13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A46B0A57-5DC9-41DB-A87E-5DCABE2A8C13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A46B0A57-5DC9-41DB-A87E-5DCABE2A8C13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75F307F1-6E0C-48AD-B656-A6E87131AA21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75F307F1-6E0C-48AD-B656-A6E87131AA21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75F307F1-6E0C-48AD-B656-A6E87131AA21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75F307F1-6E0C-48AD-B656-A6E87131AA21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73835FC5-8B7A-4EF6-9AD7-5E4752130D38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73835FC5-8B7A-4EF6-9AD7-5E4752130D38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73835FC5-8B7A-4EF6-9AD7-5E4752130D38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73835FC5-8B7A-4EF6-9AD7-5E4752130D38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{75F307F1-6E0C-48AD-B656-A6E87131AA21} = {835ED28E-A623-4CB5-B497-5DF0A0660D39}
+		{73835FC5-8B7A-4EF6-9AD7-5E4752130D38} = {835ED28E-A623-4CB5-B497-5DF0A0660D39}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {810A8B9C-9D9E-4750-8EA5-49E72FFE38F9}

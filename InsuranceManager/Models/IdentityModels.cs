@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using InsuranceManager.Domain;
 
 namespace InsuranceManager.Models
 {
@@ -27,11 +28,11 @@ namespace InsuranceManager.Models
 
         public DbSet<Coverage> Coverages { get; set; }
 
-        public DbSet<CoveragesByPolicy> CoveragesByPolicy { get; set; }
+        public DbSet<CoverageByPolicy> CoveragesByPolicy { get; set; }
 
         public DbSet<Customer> Customers { get; set; }
 
-        public DbSet<PoliciesByCustomer> PoliciesByCustomer { get; set; }
+        public DbSet<PolicyByCustomer> PoliciesByCustomer { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
