@@ -256,10 +256,15 @@
     <Compile Include="Migrations\201909141847322_CoveragePeriodTypeAdjustment.Designer.cs">
       <DependentUpon>201909141847322_CoveragePeriodTypeAdjustment.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201909160002595_SeedUsers.cs" />
+    <Compile Include="Migrations\201909160002595_SeedUsers.Designer.cs">
+      <DependentUpon>201909160002595_SeedUsers.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\RoleName.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\PolicyFormViewModel.cs" />
@@ -500,6 +505,8 @@
     <Content Include="Views\Policies\PolicyForm.cshtml" />
     <Content Include="Views\Customers\Index.cshtml" />
     <Content Include="Views\Customers\PoliciesByCustomerForm.cshtml" />
+    <Content Include="Views\Policies\ReadOnlyIndex.cshtml" />
+    <Content Include="Views\Customers\ReadOnlyIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -526,6 +533,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909141847322_CoveragePeriodTypeAdjustment.resx">
       <DependentUpon>201909141847322_CoveragePeriodTypeAdjustment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909160002595_SeedUsers.resx">
+      <DependentUpon>201909160002595_SeedUsers.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
