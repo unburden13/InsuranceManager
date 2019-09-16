@@ -1,0 +1,89 @@
+﻿@model Dictionary<string, string>
+
+@{
+    ViewBag.Title = "PoliciesByCustomerForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form>
+    <div class="form-row">
+        <div class="form-group col-md-3">
+            <h2>Current policies for </h2>
+        </div>
+        <div class="form-group col-md-9">
+            <h2 style="font-weight:bold" id="title"></h2>
+        </div>
+    </div>
+</form>
+
+<table id="policiesByCustomer" class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Policy Name</th>
+        </tr>
+    </thead>
+</table>
+
+@section scripts{
+    
+    <script>
+
+        $(document).ready( () => {
+            policiesByCustForm.configureUI();
+            policiesByCustForm.formLogic.getPolicies();
+        });
+
+
+        let policiesByCustForm = {
+            global: {
+                customerId: @Model["CustomerId"],
+                policyByCustomerId: 0
+            },
+            configureUI: () => {
+
+                let customerName = "@Model["CustomerName"]";
+                let title = "Current " + customerName + " policies";
+                console.log(customerName);
+                $("#title").text(customerName);
+
+                var table = $("#policiesByCustomer").DataTable({
+                    "lengthChange": false,
+                    "bFilter": false,
+                    ajax: {
+                        url: "/api/policiesByCustomer/" + policiesByCustForm.global.customerId,
+                        dataSrc : ""
+                    },
+                    columns: [
+                        {
+                            data: "policy.name"
+                        }
+                    ]
+                });
+            },
+            formLogic: {
+                getPolicies: () => {
+                    policiesByCustForm.services.getPolicies()
+                        .done((policies) => {
+                            $("#availablePolicies").append($("<option value=''>Available Policies</option>"));
+                            $.each(policies, function (key, policy) {
+                                $("#availablePolicies")
+                                    .append($("<option></option>")
+                                    .val(policy.id)
+                                    .html(policy.name));
+                            });
+                        });
+                }
+            },
+            services: {
+                getPolicies: () => {
+                    return $.ajax({
+                        url: "/api/policies/",
+                        method: "GET"
+                    });
+                }
+            }
+        }
+
+    </script>
+    
+    }

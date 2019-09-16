@@ -30,13 +30,15 @@ namespace InsuranceManager.Controllers
 
         }
 
-        [Authorize(Roles = RoleName.CanManagePolicies)]
         public ActionResult Edit(int id, string customerName)
         {
             customerData.Add("CustomerId", id.ToString());
             customerData.Add("CustomerName", customerName);
 
-            return View("PoliciesByCustomerForm", customerData);
+            if (User.IsInRole(RoleName.CanManagePolicies))
+                return View("PoliciesByCustomerForm", customerData);
+
+            return View("PoliciesByCustomerReadOnly", customerData);
         }
     }
 }

@@ -36,6 +36,12 @@
                     },
                     {
                         data: "phone"
+                    },
+                    {
+                        data: "id",
+                        render: function (data, type, customer) {
+                            return "<a href='customers/edit/" + data + "/" + customer.name + "'>View/Assign Policie(s)</a>";
+                        }
                     }
                 ]
             });

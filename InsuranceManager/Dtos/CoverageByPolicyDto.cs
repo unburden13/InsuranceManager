@@ -13,5 +13,7 @@ namespace InsuranceManager.Dtos
         public int CoverageId { get; set; }
 
         public decimal Percentage { get; set; }
+
+        public CoverageDto Coverage { get; set; }
     }
 }

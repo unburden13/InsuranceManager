@@ -43,10 +43,6 @@ namespace InsuranceManager.Controllers.Api
             if (policy == null)
                 return NotFound();
 
-            var coveragesByPolicy = coverageByPolicyRepository.GetCoveragesByPolicy(id);
-
-            policy.CoveragesByPolicy = coveragesByPolicy.ToList();
-
             return Ok(Mapper.Map<Policy, PolicyDto>(policy));
         }
 
@@ -74,6 +70,9 @@ namespace InsuranceManager.Controllers.Api
             var policyInDb = policyRepository.GetPolicy(id);
             if (policyInDb == null)
                 return NotFound();
+
+            policyInDb.TypeOfRisk = null;
+            //var policy = new Policy();
 
             Mapper.Map(policyDto, policyInDb);
             policyRepository.UpdatePolicy(policyInDb);

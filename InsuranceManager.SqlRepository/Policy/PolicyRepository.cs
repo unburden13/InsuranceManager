@@ -20,7 +20,19 @@ namespace InsuranceManager.SqlRepository.Policy
 
         public Domain.Policy GetPolicy(int id)
         {
-            return GetById(id);
+            var policy = GetById(id);
+
+            var coveragesByPolicyRepo = new SqlRepository.CoverageByPolicy.CoverageByPolicyRepository();
+            var coveragesByPolicy = coveragesByPolicyRepo.GetCoveragesByPolicy(id);
+            policy.CoveragesByPolicy = coveragesByPolicy;
+
+            
+
+            var typeOfRiskRepo = new SqlRepository.TypeOfRisk.TypeOfRiskRepository();
+            var typeOfRisk = typeOfRiskRepo.GetById(policy.TypeOfRiskId);
+            policy.TypeOfRisk = typeOfRisk;
+
+            return policy;
         }
 
         public int CreatePolicy(Domain.Policy policy)
@@ -33,7 +45,7 @@ namespace InsuranceManager.SqlRepository.Policy
         public void UpdatePolicy(Domain.Policy policy)
         {
             var policyInDb = GetById(policy.Id);
-            Mapper.Map(policy, policyInDb);
+            //Mapper.Map(policy, policyInDb);
             SaveChanges();
         }
 

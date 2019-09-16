@@ -28,7 +28,24 @@ namespace InsuranceManager.SqlRepository.CoverageByPolicy
         public List<Domain.CoverageByPolicy> GetCoveragesByPolicy(int policyId)
         {
             Expression<Func<Domain.CoverageByPolicy, bool>> expression = c => c.PolicyId == policyId;
-            return Filter(expression).AsQueryable().ToList();
+            var coveragesByPolicy = Filter(expression).AsQueryable().ToList();
+
+            var coverageRepo = new SqlRepository.Coverage.CoverageRepository();
+            foreach (var coverageByPolicy in coveragesByPolicy)
+            {
+                var coverage = coverageRepo.GetById(coverageByPolicy.CoverageId);
+                coverageByPolicy.Coverage = coverage;
+            }
+
+            //return Filter(expression).AsQueryable().ToList();
+            return coveragesByPolicy;
+        }
+
+        public void DeleteCoverageByPolicy(int coverageByPolicyId)
+        {
+            var coverageByPolicy = GetById(coverageByPolicyId);
+            Delete(coverageByPolicy);
+            SaveChanges();
         }
 
     }

@@ -38,13 +38,19 @@
                         data: "description"
                     },
                     {
-                        data: "startDate"
+                        data: "startDate",
+                        className: "text-right",
+                        render: function (data, type) {
+                            return data.substring(0, 10);
+                        }
                     },
                     {
                         data: "coveragePeriod"
                     },
                     {
-                        data: "price"
+                        data: "price",
+                        className: "text-right",
+                        render: $.fn.dataTable.render.number( ',', '.', 2, '$' )
                     }
                 ]
             });

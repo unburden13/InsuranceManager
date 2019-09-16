@@ -10,12 +10,13 @@ using AutoMapper;
 using InsuranceManager.BusinessLogic;
 using InsuranceManager.App_Start;
 using InsuranceManager.SqlRepository.TypeOfRisk;
+using InsuranceManager.SqlRepository.CoverageByPolicy;
 using InsuranceManager.Contract;
 
 namespace InsuranceManager.Controllers.Api
 {
     /// <summary>
-    /// Validates the creation/assignment of a single Coverage in a Policy
+    /// Manages operations and validations of a Coverage in a Policy
     /// </summary>
     public class CoveragesByPolicyController : ApiController
     {
@@ -23,19 +24,21 @@ namespace InsuranceManager.Controllers.Api
         
         private PolicyBL policyBL { get; set; }
 
-        private ITypeOfRiskRepository repository { get; set; }
+        private ITypeOfRiskRepository typeOfRiskRepository { get; set; }
+        private ICoverageByPolicyRepository coverageByPolicyRepository { get; set; }
 
         public CoveragesByPolicyController()
         {
             policyBL = IocConfig.GetInstance<PolicyBL>();
-            repository = IocConfig.GetInstance<TypeOfRiskRepository>();
+            typeOfRiskRepository = IocConfig.GetInstance<TypeOfRiskRepository>();
+            coverageByPolicyRepository = IocConfig.GetInstance<CoverageByPolicyRepository>();
         }
 
         [HttpPost]
         public IHttpActionResult CreateCoverageByPolicy(PolicyDto policyDto)
         {
             var policy = Mapper.Map<PolicyDto, Policy>(policyDto);
-            var typeOfRisk = repository.GetTypeOfRisk(policy.TypeOfRiskId);
+            var typeOfRisk = typeOfRiskRepository.GetTypeOfRisk(policy.TypeOfRiskId);
             policy.TypeOfRisk = typeOfRisk;
 
             var coverageByPolicyNoCreationReason = policyBL.CoverageByPolicyCanBeCreated(policy);
@@ -46,5 +49,13 @@ namespace InsuranceManager.Controllers.Api
             return Ok();
 
         }
+
+        [HttpDelete]
+        public IHttpActionResult DeleteCoverageByPolicy(int id)
+        {
+            coverageByPolicyRepository.DeleteCoverageByPolicy(id);
+            return Ok();
+        }
+
     }
 }

@@ -15,5 +15,7 @@ namespace InsuranceManager.Contract
 
         List<CoverageByPolicy> GetCoveragesByPolicy(int policyId);
 
+        void DeleteCoverageByPolicy(int coverageByPolicyId);
+
     }
 }

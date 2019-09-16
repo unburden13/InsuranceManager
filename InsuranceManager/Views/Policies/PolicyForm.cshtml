@@ -8,63 +8,89 @@
 <h2 id="title"></h2>
 
 <form id="policyForm">
-    <div class="form-group">
-        <label>
-            Name
-        </label>
-        <input id="name" type="text" required value="" class="form-control" />
-
-        <label>
-            Description
-        </label>
-        <input id="description" type="text" required value="" class="form-control" />
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>
+                Name
+            </label>
+            <input id="name" type="text" required value="" class="form-control" />
+        </div>
+        <div class="form-group col-md-6">
+            <label>
+                Description
+            </label>
+            <input id="description" type="text" required value="" class="form-control" />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>
+                Start Date
+            </label>
+            <input id="startDate" type="text" required value="" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="yyyy/mm/dd"/>
+        </div>
+        <div class="form-group col-md-6">
+            <label>
+                Coverage Period (In Months)
+            </label>
+            <input id="coveragePeriod" type="text" required value="" class="form-control" data-inputmask="'alias': 'decimal', 'groupSeparator': ','"/>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>
+                Price
+            </label>
+            <input id="price" type="text" required class="form-control" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"/>
+        </div>
+        <div class="form-group col-md-6">
+            <label>
+                Type Of Risk
+            </label>
+            <select id="typesOfRisk" required class="form-control">
+            </select>
+        </div>
     </div>
     
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <h4 style="font-weight:bold">Add Coverages:</h4>
+        </div>
+    </div>
+    
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>Coverage</label>
+            <select id="coverages" class="form-control"></select>
+        </div>
+        <div class="form-group col-md-4">
+            <label>Percentage</label>
+            <div class="input-group">
+                <span class="input-group-addon">%</span>
+                <input id="percentage" type="text" class="form-control" maxlength="4" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': true, 'prefix': '', 'placeholder': '0'">
+                <span class="input-group-btn">
+                    <button id="addCoverage" class="btn btn-default" type="button">Add</button>
+                </span>
+            </div>
+        </div>
+    </div>
+
+
     <div class="form-group">
-        <label>
-            Start Date
-        </label>
-        <input id="startDate" type="text" required value="" class="form-control" />
+        <div>
+            <table id="coveragesByPolicy" class="table table-striped table-hover">
+                <tr>
+                    <th>Coverage</th>
+                    <th>Percentage</th>
+                    <th>Action</th>
+                </tr>
+            </table>
+        </div>
     </div>
     <div class="form-group">
-        <label>
-            Coverage Period
-        </label>
-        <input id="coveragePeriod" type="text" required value="" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label>
-            Price
-        </label>
-        <input id="price" type="text" required value="" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label>
-            Type Of Risk
-        </label>
-        <select id="typesOfRisk" required class="form-control">
-        </select>
-    </div>
-    <div class="form-group">
-        <h4>Add Coverages</h4>
-    </div>
-    <div class="form-group">
-        <label>Coverage</label>
-        <select id="coverages" class="form-control"></select>
-        <label >Percentage</label>
-        <input id="percentage" type="text" class="form-control"/>
-        <button id="addCoverage" class="btn btn-info">Add</button>
-    </div>
-    <div class="form-group">
-        <table id="coveragesByPolicy" class="table table-striped table-hover">
-            <tr>
-                <th>Coverage</th>
-                <th>Percentage</th>
-            </tr>
-        </table>
-    </div>
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Save</button>
+        <div class="col-md-12 text-center">
+            <button id="savePolicy" class="btn btn-primary btn-lg">Save</button>
+        </div>
     </div>
 </form>
 
@@ -86,7 +112,9 @@
             },
             configureUI: () => {
 
-                $("#policyForm").submit((e) => {
+                $(":input").inputmask();
+
+                $("#savePolicy").click((e) => {
                     e.preventDefault();
 
                     policyForm.formLogic.loadPolicyObject();
@@ -95,8 +123,43 @@
 
                 $("#addCoverage").click((e) => {
                     e.preventDefault();
-                    policyForm.services.createCoverageByPolicy();
 
+                    if(policyForm.formLogic.validateCoverageAddition() == true)
+                        policyForm.services.createCoverageByPolicy();
+
+                });
+
+                $("#coveragesByPolicy").on("click", ".js-delete", function (e) {
+                    e.preventDefault();
+
+                    var button = $(this);
+                    var id = button.attr("data-coveragebypolicy-id");
+                    var tempId = button.attr("tempId");
+
+                    console.log('tempId: ' + tempId);
+
+                    bootbox.confirm("Are you sure you want to delete this coverage?", function (confirmed) {
+                        if (confirmed == true) {
+
+                            if (id > 0) {
+                                $.ajax({
+                                    url: "/api/coveragesByPolicy/" + id,
+                                    method: "DELETE",
+                                    success: function () {
+                                        button.parents("tr").remove();
+                                    }
+                                });
+                            } else {
+                                var newList = $.grep(policyForm.global.coveragesByPolicy, function (element, index) {
+                                    return element.tempId != tempId;
+                                });
+
+                                button.parents("tr").remove();
+                                policyForm.global.coveragesByPolicy = newList;
+                            }
+                        }
+                    });
+                    
                 });
 
             },
@@ -105,9 +168,9 @@
                     policyForm.global.policy.id = policyForm.global.policyId;
                     policyForm.global.policy.name = $("#name").val();
                     policyForm.global.policy.description = $("#description").val();
-                    policyForm.global.policy.startDate = $("#startDate").val();
-                    policyForm.global.policy.coveragePeriod = $("#coveragePeriod").val();
-                    policyForm.global.policy.price = $("#price").val();
+                    policyForm.global.policy.startDate = $("#startDate").inputmask('unmaskedvalue');
+                    policyForm.global.policy.coveragePeriod = $("#coveragePeriod").inputmask('unmaskedvalue');
+                    policyForm.global.policy.price = $("#price").inputmask('unmaskedvalue');
                     policyForm.global.policy.typeOfRiskId = $("#typesOfRisk").val();
                     policyForm.global.policy.coveragesByPolicy = policyForm.global.coveragesByPolicy;
                 },
@@ -143,6 +206,34 @@
                     } else {
                         $("#title").text("New Policy");
                     }
+                },
+                validateCoverageAddition: () => {
+
+                    if ($("#typesOfRisk").val() == "") {
+                        bootbox.alert("Please select a type of risk from the list");
+                        return false;
+                    }
+
+                    if ($("#coverages").val() == "") {
+                        bootbox.alert("Please select a coverage from the list");
+                        return false;
+                    }
+
+                    if ($("#percentage").val() == "") {
+                        bootbox.alert("Please enter a percentage");
+                        return false;
+                    }
+
+                    return true;
+                },
+                addRowToCoveragesTable: (rowId, coverageName, percentage, tempId) => {
+
+                    $("#coveragesByPolicy").append($("<tr>" +
+                        "<td> " + coverageName + "</td > " +
+                        "<td> " + percentage + " %</td>" +
+                        "<td><button class='btn-link js-delete' data-coveragebypolicy-id=" + rowId + " tempId='" + tempId + "'>Delete</button></td>" +
+                        "</tr > "));
+
                 }
             },
             services: {
@@ -159,16 +250,18 @@
                         $("#price").val(data.price);
                         $("#typesOfRisk").val(data.typeOfRiskId);
 
+                        console.log(data.coveragesByPolicy);
 
                         let policyCoverage = {};
                         $.each(data.coveragesByPolicy, function (key, value) {
+                            policyCoverage.id = value.id;
                             policyCoverage.policyId = value.policyId;
                             policyCoverage.coverageId = value.coverageId;
                             policyCoverage.percentage = value.percentage;
 
-                            policyForm.global.coveragesByPolicy.push(policyCoverage);
+                            //policyForm.global.coveragesByPolicy.push(policyCoverage);
 
-                            $("#coveragesByPolicy").append($("<tr><td>" + value.coverageId + "</td><td>" + policyCoverage.percentage + "</td></tr>"));
+                            policyForm.formLogic.addRowToCoveragesTable(value.id, value.coverage.name, value.percentage, 0);
                         });
 
                     });
@@ -191,11 +284,12 @@
                         method: policyForm.global.policyId == 0 ? "POST" : "PUT",
                         data: policyForm.global.policy
                     }).done((data) => {
-                        policyForm.global.policyId = data;
+                        //policyForm.global.policyId = data;
+                        //policyForm.services.getPolicy();
                         bootbox.alert("Policy saved successfully.");
                     }).fail((error) => {
                         console.log(error);
-                        if (error.responseJSON.Message)
+                        if (error.responseText != "")
                             bootbox.alert(error.responseJSON.Message);
                         else
                             bootbox.alert("An error has ocurred. Please contact our support team.");
@@ -208,7 +302,8 @@
                     let policyCoverageToAdd = {};
                     policyCoverageToAdd.policyId = policyForm.global.policyId;
                     policyCoverageToAdd.coverageId = $("#coverages").val();
-                    policyCoverageToAdd.percentage = $("#percentage").val();
+                    policyCoverageToAdd.percentage = $("#percentage").inputmask('unmaskedvalue');
+                    policyCoverageToAdd.tempId = policyCoverageToAdd.coverageId + "_" + policyCoverageToAdd.percentage;
 
                     coveragesByPolicyToAdd.push(policyCoverageToAdd);
                     let coverageName = $("#coverages option:selected").text();
@@ -225,7 +320,11 @@
                         data: policyObject
                     }).done(() => {
                         policyForm.global.coveragesByPolicy.push(policyCoverageToAdd);
-                        $("#coveragesByPolicy").append($("<tr><td>" + coverageName + "</td><td>" + policyCoverageToAdd.percentage + "</td></tr>"));
+
+                        $("#coverages").val("");
+                        $("#percentage").val("");
+
+                        policyForm.formLogic.addRowToCoveragesTable(0, coverageName, policyCoverageToAdd.percentage, policyCoverageToAdd.tempId);
                     }).fail((error) => {
                         console.log(error);
                         if (error.responseText != "")

@@ -458,6 +458,26 @@
     <Content Include="Scripts\DataTables\responsive.foundation.min.js" />
     <Content Include="Scripts\DataTables\responsive.jqueryui.js" />
     <Content Include="Scripts\DataTables\responsive.jqueryui.min.js" />
+    <Content Include="Scripts\inputmask\bindings\inputmask.binding.js" />
+    <Content Include="Scripts\inputmask\dependencyLibs\inputmask.dependencyLib.jqlite.js" />
+    <Content Include="Scripts\inputmask\dependencyLibs\inputmask.dependencyLib.jquery.js" />
+    <Content Include="Scripts\inputmask\dependencyLibs\inputmask.dependencyLib.js" />
+    <Content Include="Scripts\inputmask\global\window.js" />
+    <Content Include="Scripts\inputmask\inputmask.date.extensions.js" />
+    <Content Include="Scripts\inputmask\inputmask.extensions.js" />
+    <Content Include="Scripts\inputmask\inputmask.js" />
+    <Content Include="Scripts\inputmask\inputmask.numeric.extensions.js" />
+    <Content Include="Scripts\inputmask\jquery.inputmask.js" />
+    <Content Include="Scripts\inputmask\min\bindings\inputmask.binding.min.js" />
+    <Content Include="Scripts\inputmask\min\dependencyLibs\inputmask.dependencyLib.jqlite.min.js" />
+    <Content Include="Scripts\inputmask\min\dependencyLibs\inputmask.dependencyLib.jquery.min.js" />
+    <Content Include="Scripts\inputmask\min\dependencyLibs\inputmask.dependencyLib.min.js" />
+    <Content Include="Scripts\inputmask\min\global\window.min.js" />
+    <Content Include="Scripts\inputmask\min\inputmask.date.extensions.min.js" />
+    <Content Include="Scripts\inputmask\min\inputmask.extensions.min.js" />
+    <Content Include="Scripts\inputmask\min\inputmask.min.js" />
+    <Content Include="Scripts\inputmask\min\inputmask.numeric.extensions.min.js" />
+    <Content Include="Scripts\inputmask\min\jquery.inputmask.min.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
@@ -508,6 +528,7 @@
     <Content Include="Views\Customers\PoliciesByCustomerForm.cshtml" />
     <Content Include="Views\Policies\ReadOnlyIndex.cshtml" />
     <Content Include="Views\Customers\ReadOnlyIndex.cshtml" />
+    <Content Include="Views\Customers\PoliciesByCustomerReadOnly.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

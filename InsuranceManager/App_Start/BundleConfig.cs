@@ -13,7 +13,12 @@ namespace InsuranceManager
                         "~/Scripts/bootstrap.js",
                         "~/Scripts/bootbox.js",
                         "~/Scripts/DataTables/jquery.datatables.js",
-                        "~/Scripts/DataTables/dataTables.bootstrap.js"));
+                        "~/Scripts/DataTables/dataTables.bootstrap.js",
+                        "~/Scripts/inputmask/inputmask.js",
+                        "~/Scripts/inputmask/jquery.inputmask.js",
+                        "~/Scripts/inputmask/inputmask.extensions.js",
+                        "~/Scripts/inputmask/inputmask.date.extensions.js",
+                        "~/Scripts/inputmask/inputmask.numeric.extensions.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
