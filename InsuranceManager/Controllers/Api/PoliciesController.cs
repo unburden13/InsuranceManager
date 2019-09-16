@@ -60,14 +60,6 @@ namespace InsuranceManager.Controllers.Api
             var policy = Mapper.Map<PolicyDto, Policy>(policyDto);
 
             policy.Id = policyRepository.CreatePolicy(policy);
-            policyDto.Id = policy.Id;
-
-            //foreach (var detailCoverage in policyDto.CoveragesByPolicy)
-            //{
-            //    var coverageByPolicy = Mapper.Map<CoverageByPolicyDto, CoverageByPolicy>(detailCoverage);
-            //    coverageByPolicy.PolicyId = policyDto.Id;
-            //    coverageByPolicyRepository.CreateCoverageByPolicy(coverageByPolicy);
-            //}
 
             return Ok(policy.Id);
         }
@@ -90,6 +82,7 @@ namespace InsuranceManager.Controllers.Api
         }
 
         //DELETE api/policies/1
+        [HttpDelete]
         public IHttpActionResult DeletePolicy(int id)
         {
             var policyInDb = policyRepository.GetPolicy(id);

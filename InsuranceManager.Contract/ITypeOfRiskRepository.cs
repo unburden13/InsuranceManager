@@ -10,5 +10,7 @@ namespace InsuranceManager.Contract
     public interface ITypeOfRiskRepository
     {
         List<TypeOfRisk> GetTypesOfRisk();
+
+        TypeOfRisk GetTypeOfRisk(int id);
     }
 }

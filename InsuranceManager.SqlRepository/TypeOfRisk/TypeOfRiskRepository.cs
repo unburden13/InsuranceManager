@@ -13,5 +13,10 @@ namespace InsuranceManager.SqlRepository.TypeOfRisk
         {
             return GetAll().ToList();
         }
+
+        public Domain.TypeOfRisk GetTypeOfRisk(int id)
+        {
+            return GetById(id);
+        }
     }
 }

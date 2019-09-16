@@ -95,17 +95,7 @@
 
                 $("#addCoverage").click((e) => {
                     e.preventDefault();
-
-                    let policyCoverage = {};
-                    policyCoverage.policyId = policyForm.global.policyId;
-                    policyCoverage.coverageId = $("#coverages").val();
-                    policyCoverage.percentage = $("#percentage").val();
-
-                    policyForm.global.coveragesByPolicy.push(policyCoverage);
-
-                    let coverageName = $("#coverages option:selected").text();
-                    $("#coveragesByPolicy").append($("<tr><td>" + coverageName + "</td><td>" + policyCoverage.percentage + "</td></tr>"));
-
+                    policyForm.services.createCoverageByPolicy();
 
                 });
 
@@ -203,10 +193,43 @@
                     }).done((data) => {
                         policyForm.global.policyId = data;
                         bootbox.alert("Policy saved successfully.");
-                    }).fail((data) => {
-                        console.log(data);
+                    }).fail((error) => {
+                        console.log(error);
                         if (error.responseJSON.Message)
                             bootbox.alert(error.responseJSON.Message);
+                        else
+                            bootbox.alert("An error has ocurred. Please contact our support team.");
+                    });
+                },
+                createCoverageByPolicy: () => {
+
+                    //Load only the main data just to validate
+                    let coveragesByPolicyToAdd = [];
+                    let policyCoverageToAdd = {};
+                    policyCoverageToAdd.policyId = policyForm.global.policyId;
+                    policyCoverageToAdd.coverageId = $("#coverages").val();
+                    policyCoverageToAdd.percentage = $("#percentage").val();
+
+                    coveragesByPolicyToAdd.push(policyCoverageToAdd);
+                    let coverageName = $("#coverages option:selected").text();
+                    
+                    //Load only the main data just to validate
+                    let policyObject = {};
+                    policyObject.id = policyForm.global.policyId;
+                    policyObject.typeOfRiskId = $("#typesOfRisk").val();
+                    policyObject.coveragesByPolicy = coveragesByPolicyToAdd;
+
+                    $.ajax({
+                        url: "/api/coveragesByPolicy/",
+                        method: "POST",
+                        data: policyObject
+                    }).done(() => {
+                        policyForm.global.coveragesByPolicy.push(policyCoverageToAdd);
+                        $("#coveragesByPolicy").append($("<tr><td>" + coverageName + "</td><td>" + policyCoverageToAdd.percentage + "</td></tr>"));
+                    }).fail((error) => {
+                        console.log(error);
+                        if (error.responseText != "")
+                            bootbox.alert(error.responseJSON.message);
                         else
                             bootbox.alert("An error has ocurred. Please contact our support team.");
                     });

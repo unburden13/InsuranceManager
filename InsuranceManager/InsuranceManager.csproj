@@ -226,6 +226,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Api\CoveragesByPolicyController.cs" />
     <Compile Include="Controllers\Api\CoveragesController.cs" />
     <Compile Include="Controllers\Api\CustomersController.cs" />
     <Compile Include="Controllers\Api\PoliciesByCustomerController.cs" />
@@ -539,6 +540,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\InsuranceManager.BusinessLogic\InsuranceManager.BusinessLogic.csproj">
+      <Project>{150f757f-041c-4ad6-ba99-95c765ef7eac}</Project>
+      <Name>InsuranceManager.BusinessLogic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InsuranceManager.Contract\InsuranceManager.Contract.csproj">
       <Project>{73835fc5-8b7a-4ef6-9ad7-5e4752130d38}</Project>
       <Name>InsuranceManager.Contract</Name>
