@@ -13,7 +13,7 @@
             <label>
                 Name
             </label>
-            <input id="name" type="text" required value="" class="form-control" />
+            <input id="name" type="text" required value="" class="form-control required" />
         </div>
         <div class="form-group col-md-6">
             <label>
@@ -27,13 +27,13 @@
             <label>
                 Start Date
             </label>
-            <input id="startDate" type="text" required value="" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="yyyy/mm/dd"/>
+            <input id="startDate" type="text" required value="" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="yyyy/mm/dd" />
         </div>
         <div class="form-group col-md-6">
             <label>
                 Coverage Period (In Months)
             </label>
-            <input id="coveragePeriod" type="text" required value="" class="form-control" data-inputmask="'alias': 'decimal', 'groupSeparator': ','"/>
+            <input id="coveragePeriod" type="text" required value="" class="form-control" data-inputmask="'alias': 'decimal', 'groupSeparator': ','" />
         </div>
     </div>
     <div class="form-row">
@@ -41,7 +41,7 @@
             <label>
                 Price
             </label>
-            <input id="price" type="text" required class="form-control" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'"/>
+            <input id="price" type="text" required class="form-control" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'" />
         </div>
         <div class="form-group col-md-6">
             <label>
@@ -51,13 +51,13 @@
             </select>
         </div>
     </div>
-    
+
     <div class="form-row">
         <div class="form-group col-md-12">
             <h4 style="font-weight:bold">Add Coverages:</h4>
         </div>
     </div>
-    
+
     <div class="form-row">
         <div class="form-group col-md-6">
             <label>Coverage</label>
@@ -89,13 +89,14 @@
     </div>
     <div class="form-group">
         <div class="col-md-12 text-center">
-            <button id="savePolicy" class="btn btn-primary btn-lg">Save</button>
+            <button id="savePolicy" class="btn btn-primary btn-lg" type="submit">Save</button>
         </div>
     </div>
 </form>
 
+
 @section scripts{
-    
+
     <script>
 
         $(document).ready(() => {
@@ -112,14 +113,23 @@
             },
             configureUI: () => {
 
+                //$("#policyForm").validate();
+
                 $(":input").inputmask();
 
-                $("#savePolicy").click((e) => {
+                $("#policyForm").submit((e) => {
                     e.preventDefault();
 
                     policyForm.formLogic.loadPolicyObject();
                     policyForm.services.savePolicy();
                 });
+
+                //$("#savePolicy").click((e) => {
+                //    e.preventDefault();
+
+                //    policyForm.formLogic.loadPolicyObject();
+                //    policyForm.services.savePolicy();
+                //});
 
                 $("#addCoverage").click((e) => {
                     e.preventDefault();
@@ -159,7 +169,7 @@
                             }
                         }
                     });
-                    
+
                 });
 
             },
@@ -307,7 +317,7 @@
 
                     coveragesByPolicyToAdd.push(policyCoverageToAdd);
                     let coverageName = $("#coverages option:selected").text();
-                    
+
                     //Load only the main data just to validate
                     let policyObject = {};
                     policyObject.id = policyForm.global.policyId;
