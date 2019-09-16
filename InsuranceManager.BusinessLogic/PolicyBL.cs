@@ -10,24 +10,20 @@ using InsuranceManager.Contract;
 
 namespace InsuranceManager.BusinessLogic
 {
+    /// <summary>
+    /// Business logic for Policiy operations
+    /// </summary>
     public class PolicyBL
     {
         public int HighTypeOfRisk = 1;
-        //public PolicyBL()
-        //{
-        //    var typeOfRiskRepository = new TypeOfRiskRepository();
-        //    HighTypeOfRisk = typeOfRiskRepository.GetAll().Where(r => r.Name == "High").SingleOrDefault().Id;
-        //}
-
+        
         public string CoverageByPolicyCanBeCreated(Domain.Policy policy)
         {
             //var typeOfRiskRepository = new TypeOfRiskRepository();
-            //var typeOfRisk = typeOfRiskRepository.GetById(policy.TypeOfRiskId);
-
-            //var typeOfRisk = repository.GetTypeOfRisk(policy.TypeOfRiskId);
+            //var highTypeOfRiskId = typeOfRiskRepository.GetAll().Where(r => r.Name == "High").SingleOrDefault().Id;
             var coverageByPolicy = policy.CoveragesByPolicy[0];
 
-            if (policy.TypeOfRiskId == HighTypeOfRisk && coverageByPolicy.Percentage > 50)
+            if (policy.TypeOfRisk.Name == "High" && coverageByPolicy.Percentage > 50)
                 return "The type of risk is 'High', so the coverage percentage can't be major than 50%";
 
             return "";

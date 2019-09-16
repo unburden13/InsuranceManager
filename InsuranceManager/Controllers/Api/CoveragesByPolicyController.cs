@@ -34,8 +34,10 @@ namespace InsuranceManager.Controllers.Api
         [HttpPost]
         public IHttpActionResult CreateCoverageByPolicy(PolicyDto policyDto)
         {
-
             var policy = Mapper.Map<PolicyDto, Policy>(policyDto);
+            var typeOfRisk = repository.GetTypeOfRisk(policy.TypeOfRiskId);
+            policy.TypeOfRisk = typeOfRisk;
+
             var coverageByPolicyNoCreationReason = policyBL.CoverageByPolicyCanBeCreated(policy);
 
             if (coverageByPolicyNoCreationReason != "")

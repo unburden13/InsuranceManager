@@ -23,29 +23,24 @@ namespace InsuranceManager.Tests
         }
 
         [Test]
-        [TestCase(1, 60)]
-        [TestCase(1, 30)]
-        public void TestMethod1(int typeOfRiskId, decimal coveragePercentage)
+        [TestCase("High", 60)]
+        [TestCase("High", 30)]
+        [TestCase("Low", 10)]
+        [TestCase("Low", 80)]
+        public void CoverageByPolicyCanBeCreated_WhenCalled_ValidateTypeOfRiskVsPercentage(string typeOfRiskName, decimal coveragePercentage)
         {
-            //var repositoryTypeOfRisk = new SqlRepository.TypeOfRisk.TypeOfRiskRepository();
-            //var highTypeOfRisk = repositoryTypeOfRisk.GetAll().Where(r => r.Name == "High").SingleOrDefault().Id;
-            //var highTypeOfRiskId = 1;
-
-            //var repository = new Mock<ITypeOfRiskRepository>();
-            //repository.Setup(r => r.GetTypeOfRisk(typeOfRiskId)).Returns(new TypeOfRisk());
-
+            var typeOfRisk = new TypeOfRisk { Name = typeOfRiskName };
             var coverageByPolicy = new CoverageByPolicy { Percentage = coveragePercentage };
             var coveragesByPolicy = new List<CoverageByPolicy>();
             coveragesByPolicy.Add(coverageByPolicy);
-            var policy = new Policy { TypeOfRiskId = typeOfRiskId, CoveragesByPolicy = coveragesByPolicy };
+            var policy = new Policy { TypeOfRisk = typeOfRisk, CoveragesByPolicy = coveragesByPolicy };
 
             var result = BL.CoverageByPolicyCanBeCreated(policy);
 
-            if (typeOfRiskId == BL.HighTypeOfRisk && coveragePercentage > 50)
+            if (typeOfRiskName == "High" && coveragePercentage > 50)
                 Assert.That(result, Is.Not.EqualTo(""));
             else
                 Assert.That(result, Is.EqualTo(""));
-
         }
     }
 }
