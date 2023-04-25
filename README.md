@@ -1,7 +1,13 @@
 # InsuranceManager
-GAP Test
 
-Web application for the management of Insurance Policies
+Excercise - Web application for Insurance Policies management
+
+<ul>
+<li>.Net 4.7</li>
+<li>MVC</li>
+<li>Entity Framework</li>
+<li>Repository Pattern</li>
+</ul>
 
 <b>Users:</b>
 
